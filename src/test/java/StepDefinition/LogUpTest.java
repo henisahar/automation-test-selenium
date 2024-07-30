@@ -13,10 +13,10 @@ import utility.BrowserDriver;
 
 import java.time.Duration;
 
-import static pages.LogInPage.click_newregistration_btn;
+
 import static pages.LogInPage.visibility_login_page;
 import static pages.LogUpPage.*;
-import static utility.BrowserDriver.driver;
+
 
 public class LogUpTest {
     static WebDriver driver ;
@@ -28,7 +28,7 @@ public class LogUpTest {
         homePage =new HomePage(driver);
         wait =new WebDriverWait(driver, Duration.ofSeconds(20));
     }
-// Add a WebDriverWait instance
+
 
     @Given("Navigate the user to the logup page")
     public void navigate_the_user_to_the_logup_page() {
@@ -62,10 +62,8 @@ public class LogUpTest {
             System.out.println("Clicked on validate button");
         } catch (Exception e) {
             e.printStackTrace(); // Print stack trace for debugging
-        } finally {
-            // Optionally, you can close the driver here if you want to end the test in this step
-            // BrowserDriver.closeDriver();
         }
+
     }
 
     @Then("The user should be able to view empty filds logup error")
