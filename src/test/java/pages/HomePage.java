@@ -6,8 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
-import  static utility.BrowserDriver.driver;
-import static utility.BrowserDriver.driver;
+
 
 public class HomePage {
     public static String discoverbtn_xpath ="//*[@id=\"section-0\"]/div[1]/div[2]";

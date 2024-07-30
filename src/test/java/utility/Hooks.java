@@ -8,7 +8,7 @@ import io.cucumber.java.Scenario;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
-import utility.ExtentManager;
+
 
 public class Hooks {
     private static ExtentReports extent = ExtentManager.getInstance();

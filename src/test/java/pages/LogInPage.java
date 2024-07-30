@@ -6,11 +6,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.time.Instant;
+
 
 import static org.junit.Assert.assertEquals;
-import static pages.LogUpPage.password_xpath;
-import static pages.LogUpPage.wait;
+
 import  static utility.BrowserDriver.driver;
 
 public class LogInPage {
