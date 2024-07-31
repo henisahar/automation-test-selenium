@@ -1,24 +1,7 @@
 pipeline {
     agent none
     stages {
-        stage('Test Email') {
-            agent any
-            steps {
-                script {
-                    echo 'Sending test email...'
-                    try {
-                        emailext (
-                            subject: 'Test Email',
-                            body: 'This is a test email to verify email configuration.',
-                            to: 'saharheni6@gmail.com'  // Replace with a valid email address
-                        )
-                        echo 'Test email sent.'
-                    } catch (Exception e) {
-                        echo "Failed to send test email: ${e.message}"
-                    }
-                }
-            }
-        }
+        
         stage("build & SonarQube Scanner") {
             agent any
             steps {
