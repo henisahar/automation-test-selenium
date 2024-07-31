@@ -7,8 +7,7 @@ pipeline {
                 withSonarQubeEnv('SonarQube_server') {
                     bat 'mvn clean package sonar:sonar'
                 }
-                // Archive all files in the workspace
-                archiveArtifacts artifacts: '**/*', allowEmptyArchive: true
+              
             }
         }
     }
@@ -23,8 +22,8 @@ pipeline {
                         <p>Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' succeeded.</p>
                         <p>Check the details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                         """,
-                        to: 'saharheni6@gmail.com',  // Replace with actual email address
-                        attachmentsPattern: '**/*',  // Adjust this pattern to match all files in the workspace
+                        to: 'saharheni6@gmail.com', 
+                      
                         recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
                     )
                     echo 'Success email sent.'
@@ -43,8 +42,8 @@ pipeline {
                         <p>Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' failed.</p>
                         <p>Check the details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                         """,
-                        to: 'saharheni6@gmail.com',  // Replace with actual email address
-                        attachmentsPattern: '**/*',  // Adjust this pattern to match all files in the workspace
+                        to: 'saharheni6@gmail.com', 
+                      
                         recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
                     )
                     echo 'Failure email sent.'
