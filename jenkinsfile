@@ -1,13 +1,14 @@
 pipeline {
     agent none
     stages {
-        
         stage("build & SonarQube Scanner") {
             agent any
             steps {
                 withSonarQubeEnv('SonarQube_server') {
                     bat 'mvn clean package sonar:sonar'
                 }
+                // Archive all files in the workspace
+                archiveArtifacts artifacts: '**/*', allowEmptyArchive: true
             }
         }
     }
@@ -23,6 +24,7 @@ pipeline {
                         <p>Check the details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                         """,
                         to: 'saharheni6@gmail.com',  // Replace with actual email address
+                        attachmentsPattern: '**/*',  // Adjust this pattern to match all files in the workspace
                         recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
                     )
                     echo 'Success email sent.'
@@ -42,6 +44,7 @@ pipeline {
                         <p>Check the details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                         """,
                         to: 'saharheni6@gmail.com',  // Replace with actual email address
+                        attachmentsPattern: '**/*',  // Adjust this pattern to match all files in the workspace
                         recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
                     )
                     echo 'Failure email sent.'
