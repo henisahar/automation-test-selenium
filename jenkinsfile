@@ -1,6 +1,24 @@
 pipeline {
     agent none
     stages {
+        stage('Test Email') {
+            agent any
+            steps {
+                script {
+                    echo 'Sending test email...'
+                    try {
+                        emailext (
+                            subject: 'Test Email',
+                            body: 'This is a test email to verify email configuration.',
+                            to: 'saharheni6@gmail.com'  // Replace with a valid email address
+                        )
+                        echo 'Test email sent.'
+                    } catch (Exception e) {
+                        echo "Failed to send test email: ${e.message}"
+                    }
+                }
+            }
+        }
         stage("build & SonarQube Scanner") {
             agent any
             steps {
@@ -21,7 +39,7 @@ pipeline {
                         <p>Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' succeeded.</p>
                         <p>Check the details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                         """,
-                        to: 'saharheni6@gmail.com',  
+                        to: 'saharheni6@gmail.com',  // Replace with actual email address
                         recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
                     )
                     echo 'Success email sent.'
@@ -40,7 +58,7 @@ pipeline {
                         <p>Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' failed.</p>
                         <p>Check the details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                         """,
-                        to: 'saharheni6@gmail.com', 
+                        to: 'saharheni6@gmail.com',  // Replace with actual email address
                         recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
                     )
                     echo 'Failure email sent.'
