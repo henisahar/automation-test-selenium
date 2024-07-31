@@ -10,4 +10,26 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+            emailext (
+                subject: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """
+                <p>Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' succeeded.</p>
+                <p>Check the details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                """,
+                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+            )
+        }
+        failure {
+            emailext (
+                subject: "FAILURE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """
+                <p>Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' failed.</p>
+                <p>Check the details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                """,
+                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+            )
+        }
+    }
 }
