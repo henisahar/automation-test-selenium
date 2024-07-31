@@ -16,10 +16,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
-<<<<<<< HEAD
+
     <sonar.host.url>http://localhost:9000/</sonar.host.url>
-=======
->>>>>>> 5c34bb1dea3ac0d24ea32dcc000438c6728e3a73
+
   </properties>
 
   <dependencies>
