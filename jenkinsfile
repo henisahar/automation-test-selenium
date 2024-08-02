@@ -1,0 +1,56 @@
+pipeline {
+    agent none
+    stages {
+        stage("build & SonarQube Scanner") {
+            agent any
+            steps {
+                withSonarQubeEnv('SonarQube_server') {
+                    bat 'mvn clean package sonar:sonar'
+                }
+              
+            }
+        }
+    }
+    post {
+        success {
+            script {
+                echo 'Sending success email...'
+                try {
+                    emailext (
+                        subject: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                        body: """
+                        <p>Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' succeeded.</p>
+                        <p>Check the details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                        """,
+                        to: 'saharheni6@gmail.com', 
+                      
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+                    )
+                    echo 'Success email sent.'
+                } catch (Exception e) {
+                    echo "Failed to send success email: ${e.message}"
+                }
+            }
+        }
+        failure {
+            script {
+                echo 'Sending failure email...'
+                try {
+                    emailext (
+                        subject: "FAILURE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                        body: """
+                        <p>Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' failed.</p>
+                        <p>Check the details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                        """,
+                        to: 'saharheni6@gmail.com', 
+                      
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+                    )
+                    echo 'Failure email sent.'
+                } catch (Exception e) {
+                    echo "Failed to send failure email: ${e.message}"
+                }
+            }
+        }
+    }
+}
