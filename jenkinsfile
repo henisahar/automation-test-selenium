@@ -6,7 +6,6 @@ pipeline {
             agent any
             steps {
                 script {
-
                     docker.build("my-selenium-test")
                 }
             }
@@ -16,7 +15,7 @@ pipeline {
             agent {
                 docker {
                     image 'my-selenium-test'
-                    args '-v /root/.m2:/root/.m2' // Mount local Maven repository
+                    args '-v //c/ProgramData/Jenkins/.m2:/root/.m2' // Adjust path format for Docker on Windows
                 }
             }
             steps {
