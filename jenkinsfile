@@ -15,7 +15,7 @@ pipeline {
             agent {
                 docker {
                     image 'my-selenium-test'
-                    args '-v //c/ProgramData/Jenkins/.m2:/root/.m2' // Adjust path format for Docker on Windows
+                    // Avoid path issues by using default arguments or correcting paths
                 }
             }
             steps {
