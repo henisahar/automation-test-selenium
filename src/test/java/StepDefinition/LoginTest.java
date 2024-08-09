@@ -5,10 +5,12 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
 import pages.HomePage;
+import pages.LogInPage;
+import pages.LogUpPage;
 import utility.BrowserDriver;
 
-import static pages.LogInPage.*;
-import static pages.LogUpPage.visibility_user_registration_page;
+import pages.LogInPage.*;
+
 
 public class LoginTest {
     private WebDriver driver;
@@ -35,9 +37,10 @@ public class LoginTest {
     @When("The user successfully entered the login details")
     public void the_user_successfully_entered_the_login_details() {
         try {
-            sendkeys_userneme("saharheni6@gmail.com");
-            sendkeys_password("14062001");
-            click_login_btn();
+            LogInPage LogInPage = null;
+            LogInPage.sendkeys_userneme("saharheni6@gmail.com");
+            LogInPage.sendkeys_password("14062001");
+            LogInPage.click_login_btn();
             System.out.println("Entered login details and clicked login button");
         } catch (Exception e) {
             System.err.println("Error entering login details: " + e.getMessage());
@@ -48,7 +51,7 @@ public class LoginTest {
     @Then("The user should be able to view the profile page")
     public void the_user_should_be_able_to_view_the_profile_page() {
         try {
-            visibility_login_page();
+            LogInPage.visibility_login_page();
         } catch (Exception e) {
             System.err.println("Error viewing profile page: " + e.getMessage());
             e.printStackTrace();
@@ -62,7 +65,7 @@ public class LoginTest {
         try {
             String currentUrl = driver.getCurrentUrl();
             System.out.println("Current URL: " + currentUrl);
-            click_login_btn();
+            LogInPage.click_login_btn();
             System.out.println("Clicked on login button with empty inputs");
         } catch (Exception e) {
             System.err.println("Error letting inputs empty: " + e.getMessage());
@@ -73,7 +76,7 @@ public class LoginTest {
     @Then("The user should be able to view Login Error Message")
     public void the_user_should_be_able_to_view_login_error_message() {
         try {
-            visibility_login_error_message();
+            LogInPage.visibility_login_error_message();
         } catch (Exception e) {
             System.err.println("Error viewing login error message: " + e.getMessage());
             e.printStackTrace();
@@ -85,9 +88,9 @@ public class LoginTest {
     @When("user enter wrong credentials")
     public void user_enter_wrong_credentials() {
         try {
-            sendkeys_userneme("saharheni6@gmail.com");
-            sendkeys_password("1406200lll1");
-            click_login_btn();
+            LogInPage.sendkeys_userneme("saharheni6@gmail.com");
+            LogInPage.sendkeys_password("1406200lll1");
+            LogInPage.click_login_btn();
             System.out.println("Entered wrong credentials and clicked login button");
         } catch (Exception e) {
             System.err.println("Error entering wrong credentials: " + e.getMessage());
@@ -98,7 +101,7 @@ public class LoginTest {
     @Then("user should be able to see error message")
     public void user_should_be_able_to_see_error_message() {
         try {
-            visibility_login_wrong_credentials_message();
+            LogInPage.visibility_login_wrong_credentials_message();
         } catch (Exception e) {
             System.err.println("Error viewing wrong credentials message: " + e.getMessage());
             e.printStackTrace();
@@ -110,7 +113,7 @@ public class LoginTest {
     @Then("user should be able to see the registration page")
     public void user_should_be_able_to_see_the_registration_page() {
         try {
-            visibility_user_registration_page();
+            LogUpPage.visibility_user_registration_page();
         } catch (Exception e) {
             System.err.println("Error viewing registration page: " + e.getMessage());
             e.printStackTrace();
@@ -122,7 +125,7 @@ public class LoginTest {
     @When("user clicks on new Registration button")
     public void user_clicks_on_new_registration_button() {
         try {
-            click_newregistration_btn();
+            LogInPage.click_newregistration_btn();
             System.out.println("Clicked on new registration button");
         } catch (Exception e) {
             System.err.println("Error clicking new registration button: " + e.getMessage());

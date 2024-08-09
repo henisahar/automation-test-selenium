@@ -7,71 +7,63 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.HomePage;
+import pages.LogInPage;
+import pages.LogUpPage;
 import utility.BrowserDriver;
 
-import java.time.Duration;
-
-
-import static pages.LogInPage.visibility_login_page;
-import static pages.LogUpPage.*;
-
-
 public class LogUpTest {
-    static WebDriver driver ;
-    HomePage homePage ;
-    public static WebDriverWait wait ;
+    private WebDriver driver;
 
-    public LogUpTest() {
-        driver  = BrowserDriver.getDriver();
-        homePage =new HomePage(driver);
-        wait =new WebDriverWait(driver, Duration.ofSeconds(20));
-    }
+
 
 
     @Given("Navigate the user to the logup page")
     public void navigate_the_user_to_the_logup_page() {
         try {
+            driver = BrowserDriver.getDriver();
+            HomePage homePage = new HomePage(driver);
             System.out.println("Navigating to the login page");
             driver.get("https://www.ha.com.tn/");
             homePage.clickdiscoverbtn();
             System.out.println("Clicked on discover button");
             homePage.clickSignInLink();
             System.out.println("Clicked on Sign In link");
-            Thread.sleep(5000);
-            WebElement signUpLink = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[2]/a/span")));
-            signUpLink.click();
-            Thread.sleep(5000);
+
+            LogUpPage.signUpLinkClick();
+            System.out.println("Clicked on Sign Up link");
+
             String currentUrl = driver.getCurrentUrl();
             System.out.println("Current URL: " + currentUrl);
-            System.out.println("Clicked on Sign Up link");
-            click_mail_btn();
+
+            LogUpPage logUpPage = null;
+            logUpPage.click_mail_btn();
             System.out.println("Clicked on mail link");
         } catch (Exception e) {
-            e.printStackTrace(); // Print stack trace for debugging
+            e.printStackTrace();
         }
     }
 
     @When("The user let the inputs  of the logup page empty")
     public void the_user_let_the_inputs_of_the_logup_page_empty() {
         try {
-            cocher_btn();
+            LogUpPage logUpPage = null;
+            logUpPage.cocher_btn();
             System.out.println("Checked confidentiality");
-            click_valider_btn();
+            logUpPage.click_valider_btn();
             System.out.println("Clicked on validate button");
         } catch (Exception e) {
-            e.printStackTrace(); // Print stack trace for debugging
+            e.printStackTrace();
         }
-
     }
 
-    @Then("The user should be able to view empty filds logup error")
-    public void the_user_should_be_able_to_view_empty_filds_logup_error() {
+    @Then("The user should be able to view empty fields logup error")
+    public void the_user_should_be_able_to_view_empty_fields_logup_error() {
         try {
-            Visibility_empty_error_message();
+            LogUpPage logUpPage = null;
+            logUpPage.visibility_empty_error_message();
         } catch (Exception e) {
-            e.printStackTrace(); // Print stack trace for debugging
+            e.printStackTrace();
         } finally {
             BrowserDriver.closeDriver();
         }
@@ -80,22 +72,22 @@ public class LogUpTest {
     @When("user clicks on return button")
     public void user_clicks_on_return_button() {
         try {
-            click_return_btn();
+            LogUpPage logUpPage = null;
+            logUpPage.click_return_btn();
             System.out.println("Clicked on return button");
         } catch (Exception e) {
-            e.printStackTrace(); // Print stack trace for debugging
+            e.printStackTrace();
         }
     }
 
     @Then("user should be able tp see the login page")
-    public void user_should_be_able_tp_see_the_login_page() {
+    public void user_should_be_able_to_see_the_login_page() {
         try {
-            visibility_login_page();
+            LogInPage.visibility_login_page();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             BrowserDriver.closeDriver();
-
         }
     }
 }

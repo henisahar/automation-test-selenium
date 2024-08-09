@@ -1,16 +1,32 @@
 pipeline {
     agent none
+
     stages {
-        stage("build & SonarQube Scanner") {
+        stage("Build Docker Image") {
             agent any
             steps {
-                withSonarQubeEnv('SonarQube_server') {
-                    bat 'mvn clean package sonar:sonar'
+                script {
+
+                    docker.build("my-selenium-test")
                 }
-              
+            }
+        }
+
+        stage("Run SonarQube Scanner") {
+            agent {
+                docker {
+                    image 'my-selenium-test'
+                    args '-v /root/.m2:/root/.m2' // Mount local Maven repository
+                }
+            }
+            steps {
+                withSonarQubeEnv('SonarQube_server') {
+                    sh 'mvn sonar:sonar'
+                }
             }
         }
     }
+
     post {
         success {
             script {
@@ -22,8 +38,7 @@ pipeline {
                         <p>Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' succeeded.</p>
                         <p>Check the details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                         """,
-                        to: 'saharheni6@gmail.com', 
-                      
+                        to: 'saharheni6@gmail.com',
                         recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
                     )
                     echo 'Success email sent.'
@@ -42,8 +57,7 @@ pipeline {
                         <p>Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' failed.</p>
                         <p>Check the details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                         """,
-                        to: 'saharheni6@gmail.com', 
-                      
+                        to: 'saharheni6@gmail.com',
                         recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
                     )
                     echo 'Failure email sent.'

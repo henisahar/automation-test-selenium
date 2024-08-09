@@ -13,16 +13,11 @@ public class BrowserDriver {
     public static WebDriver getDriver() {
         if (driver == null) {
             System.out.println("Initializing the ChromeDriver");
-
-
             WebDriverManager.chromedriver().setup();
-
             System.out.println("Initializing the ChromeDriver");
             System.setProperty("webdriver.chrome.driver", "C:\\Users\\SAHAR\\Downloads\\chromedriver-win32\\chromedriver.exe");
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--remote-allow-origins=*");
-
-
             driver = new ChromeDriver(options);
             driver.manage().window().maximize();
         }

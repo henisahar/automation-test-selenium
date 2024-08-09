@@ -2,7 +2,7 @@ Feature: logup user
   Scenario: Unsuccessful Logup  with empty fields
     Given Navigate the user to the logup page
     When The user let the inputs  of the logup page empty
-    Then The user should be able to view empty filds logup error
+    Then The user should be able to view empty fields logup error
 
   Scenario: validate new user is able to view the login after clicking on return button
     Given Navigate the user to the logup page

@@ -3,33 +3,25 @@ package StepDefinition;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import pages.HomePage;
+
+import pages.ForgotPasswordPage;
+import pages.LogInPage;
 import utility.BrowserDriver;
 
-import java.time.Duration;
 
-import static pages.ForgotPasswordPage.*;
-import static pages.LogInPage.forgot_password_btn;
 
 public class ForgotPasswordTest {
-    static WebDriver driver ;
-    HomePage homePage ;
-    public static WebDriverWait wait ;
-    public ForgotPasswordTest () {
-        driver  = BrowserDriver.getDriver();
-        homePage = new HomePage(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-    }
+
+    private WebDriver driver;
+
+
 
     @When("user clicks on forgot password")
     public void user_clicks_on_forgot_password() {
         try {
             System.out.println("Clicking on forgot password button");
-            forgot_password_btn();
-        }
-        catch(Exception e) {
-            System.err.println("Error clicking forgot password button: " + e.getMessage());
+            LogInPage.forgot_password_btn();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -37,10 +29,9 @@ public class ForgotPasswordTest {
     @Then("user should be able to see the change password page")
     public void user_should_be_able_to_see_the_change_password_page() {
         try {
-            visibility_passwordforgotten_page();
-        }
-        catch(Exception e) {
-            System.err.println("Error verifying the change password page: " + e.getMessage());
+            ForgotPasswordPage forgotPasswordPage = null;
+            forgotPasswordPage.visibility_passwordforgotten_page();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -48,11 +39,10 @@ public class ForgotPasswordTest {
     @When("user navigate to forgot password page and let the fields empty")
     public void user_navigate_to_forgot_password_page_and_let_the_fields_empty() {
         try {
-            forgot_password_btn();
-            click_next_btn();
-        }
-        catch(Exception e) {
-            System.err.println("Error navigating to forgot password page: " + e.getMessage());
+            ForgotPasswordPage forgotPasswordPage = null;
+            LogInPage.forgot_password_btn();
+            forgotPasswordPage.click_next_btn();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -60,11 +50,12 @@ public class ForgotPasswordTest {
     @Then("user should be able to see error empty fields")
     public void user_should_be_able_to_see_error_empty_fields() {
         try {
-            visibility_empty_field_error();
-        }
-        catch(Exception e) {
-            System.err.println("Error verifying empty field error: " + e.getMessage());
+            ForgotPasswordPage forgotPasswordPage = null;
+            forgotPasswordPage.visibility_empty_field_error();
+        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            BrowserDriver.closeDriver();
         }
     }
 }
