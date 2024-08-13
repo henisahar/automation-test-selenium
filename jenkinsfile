@@ -1,68 +1,32 @@
 pipeline {
-    agent none
-
+    agent any
     stages {
-        stage("Build Docker Image") {
-            agent any
+        stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("my-selenium-test")
+                    docker.build('my-selenium-test')
                 }
             }
         }
-
-        stage("Run SonarQube Scanner") {
-            agent {
-                docker {
-                    image 'my-selenium-test'
-                    args '-v /c/ProgramData/Jenkins/.jenkins/workspace/testY:/app -w /app'
-                }
-            }
+        stage('Run SonarQube Scanner') {
             steps {
-                withSonarQubeEnv('SonarQube_server') {
-                    sh 'mvn sonar:sonar'
+                script {
+                    docker.image('my-selenium-test').inside('-w /app -v /c/ProgramData/Jenkins/.jenkins/workspace/testY:/app') {
+                        // Replace this with your SonarQube commands
+                        sh 'mvn sonar:sonar'
+                    }
                 }
             }
         }
     }
-
     post {
-        success {
-            script {
-                echo 'Sending success email...'
-                try {
-                    emailext (
-                        subject: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                        body: """
-                        <p>Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' succeeded.</p>
-                        <p>Check the details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
-                        """,
-                        to: 'saharheni6@gmail.com',
-                        recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
-                    )
-                    echo 'Success email sent.'
-                } catch (Exception e) {
-                    echo "Failed to send success email: ${e.message}"
-                }
-            }
-        }
         failure {
             script {
-                echo 'Sending failure email...'
-                try {
-                    emailext (
-                        subject: "FAILURE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' failed.",
-                        body: """
-                        <p>Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' failed.</p>
-                        <p>Check the details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
-                        """,
-                        to: 'saharheni6@gmail.com',
-                        recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
-                    )
-                    echo 'Failure email sent.'
-                } catch (Exception e) {
-                    echo "Failed to send failure email: ${e.message}"
-                }
+                emailext(
+                    subject: "Jenkins Build Failed: ${currentBuild.fullDisplayName}",
+                    body: "Build failed. Please check the Jenkins console output for more details.",
+                    to: "saharheni6@gmail.com, sahar.heni@ensi-uma.tn"
+                )
             }
         }
     }
