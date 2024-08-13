@@ -1,10 +1,10 @@
 pipeline {
-      agent {
+    agent {
         docker {
-          label 'windows'
-          image 'mcr.microsoft.com/powershell'
+            label 'windows'
+            image 'mcr.microsoft.com/powershell'
         }
-      }
+    }
 
     stages {
         stage('Build Docker Image') {
@@ -17,8 +17,8 @@ pipeline {
         stage('Run SonarQube Scanner') {
             steps {
                 script {
-                    docker.image('my-selenium-test').inside("-v //c//ProgramData//Jenkins//.jenkins//workspace//testY://app")  {
-                        sh 'mvn sonar:sonar'
+                    docker.image('my-selenium-test').inside("-v C:/ProgramData/Jenkins/.jenkins/workspace/testY:/app")  {
+                        bat 'mvn sonar:sonar'
                     }
                 }
             }
