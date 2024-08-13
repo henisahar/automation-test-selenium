@@ -11,7 +11,7 @@ pipeline {
         stage('Run SonarQube Scanner') {
             steps {
                 script {
-                    docker.image('my-selenium-test').inside("-v /c/ProgramData/Jenkins/.jenkins/workspace/testY:/app")  {
+                    docker.image('my-selenium-test').inside("-v \\c\\ProgramData\\Jenkins\\.jenkins\\workspace\\testY:\\app")  {
                         sh 'mvn sonar:sonar'
                     }
                 }
