@@ -11,20 +11,20 @@ pipeline {
             }
         }
 
-      stage("Run SonarQube Scanner") {
-          agent {
-              docker {
-                  image 'my-selenium-test'
-                  args '-v /c/ProgramData/Jenkins/.jenkins/workspace/testY:/app -w /app'
-              }
-          }
-          steps {
-              withSonarQubeEnv('SonarQube_server') {
-                  sh 'mvn sonar:sonar'
-              }
-          }
-      }
-
+        stage("Run SonarQube Scanner") {
+            agent {
+                docker {
+                    image 'my-selenium-test'
+                    args '-v /c/ProgramData/Jenkins/.jenkins/workspace/testY:/app -w /app'
+                }
+            }
+            steps {
+                withSonarQubeEnv('SonarQube_server') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+    }
 
     post {
         success {
