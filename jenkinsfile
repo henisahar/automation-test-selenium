@@ -7,6 +7,18 @@ pipeline {
                 git 'https://github.com/henisahar/automation-test-selenium.git' // Update with your repository URL
             }
         }
+
+        stage('SonarQube Analysis') {
+            environment {
+                scannerHome = tool 'SonarQube Scanner' // This should match the name of the SonarQube Scanner installation in Jenkins
+            }
+            steps {
+                withSonarQubeEnv('SonarQube') { // This should match the name of your SonarQube server in Jenkins
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -14,6 +26,7 @@ pipeline {
                 }
             }
         }
+
         stage('Push Docker Image') {
             steps {
                 script {
