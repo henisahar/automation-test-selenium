@@ -1,24 +1,25 @@
-# Use a Maven base image
+# Stage 1: Build Stage
 FROM maven:3.8.6-eclipse-temurin-17 AS build
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the pom.xml file to the working directory
+# Copy the pom.xml file and download dependencies
 COPY pom.xml /app/
+RUN mvn dependency:go-offline
 
-# Verify that pom.xml is copied
-RUN ls -la /app/ && cat /app/pom.xml
-
-# Copy the source code to the working directory
+# Copy the source code and build the project
 COPY src /app/src/
-
-# Build the Maven project
 RUN mvn package
 
-# Verify that the jar file is created
-RUN ls -la /app/target/ && ls -la /app/target/*.jar
+# Stage 2: Runtime Stage
+FROM openjdk:17-jdk-slim
 
-# Keep the container running for manual inspection
-CMD ["mvn", "package", "-X"]
+# Set the working directory
+WORKDIR /app
 
+# Copy the built jar file from the build stage
+COPY --from=build /app/target/*.jar /app/app.jar
+
+# Set the command to run the application
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
