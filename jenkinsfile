@@ -24,15 +24,13 @@ pipeline {
                 }
             }
         }
-        stage('Run SonarQube Scanner') {
+        stage('Build & SonarQube Scanner') {
             steps {
-                script {
-                    docker.image("sonarsource/sonar-scanner-cli:latest").inside {
-                        // Verify the working directory
-                        sh 'ls -al /usr/src' // Adjust this path based on your setup
-                        // Run sonar-scanner
-                        sh 'sonar-scanner'
-                    }
+                withSonarQubeEnv('SonarQube_server') {
+                    sh 'mvn clean package sonar:sonar'
+                }
+                withSonarQubeEnv('SonarQube_server') {
+                    bat 'mvn clean package sonar:sonar'
                 }
             }
         }
@@ -49,6 +47,7 @@ pipeline {
             }
         }
     }
+
     post {
         always {
             emailext(
