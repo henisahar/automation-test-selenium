@@ -9,7 +9,7 @@ import pages.LogInPage;
 import pages.LogUpPage;
 import utility.BrowserDriver;
 
-import pages.LogInPage.*;
+
 
 
 public class LoginTest {
