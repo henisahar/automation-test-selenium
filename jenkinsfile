@@ -13,7 +13,7 @@ pipeline {
                 scannerHome = tool 'SonarQube Scanner'  // This matches your configured scanner name
             }
             steps {
-                withSonarQubeEnv('SonarQube') { // Ensure this matches the configured SonarQube server name
+                withSonarQubeEnv('SonarQube Scanner') { // Ensure this matches the configured SonarQube server name
                     sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
