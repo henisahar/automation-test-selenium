@@ -24,16 +24,6 @@ pipeline {
                 }
             }
         }
-        stage('Run SonarQube Scanner') {
-            steps {
-                script {
-                    docker.image("sonarsource/sonar-scanner-cli:latest").inside {
-                        // Run sonar-scanner without using `nohup`
-                        sh 'sonar-scanner'
-                    }
-                }
-            }
-        }
         stage('Update GitHub Status') {
             steps {
                 script {
