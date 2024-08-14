@@ -26,10 +26,11 @@ pipeline {
         }
         stage('Run SonarQube Scanner') {
             steps {
-
                 script {
-                    docker.image("saharheni/selenium-tests:${env.BUILD_ID}").inside('-v /c/ProgramData/Jenkins/.jenkins/workspace/testY:/app') {
-                        sh 'mvn sonar:sonar'
+                    // Use the official SonarQube Scanner Docker image
+                    docker.image("sonarsource/sonar-scanner-cli:latest").inside('-v /c/ProgramData/Jenkins/.jenkins/workspace/testY:/usr/src') {
+                        // Ensure you have a valid sonar-project.properties or pass SonarQube parameters via command
+                        sh 'sonar-scanner'
                     }
                 }
             }
