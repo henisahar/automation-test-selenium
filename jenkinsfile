@@ -27,9 +27,10 @@ pipeline {
         stage('Run SonarQube Scanner') {
             steps {
                 script {
-                    // Use the official SonarQube Scanner Docker image
-                    docker.image("sonarsource/sonar-scanner-cli:latest").inside('-v /c/ProgramData/Jenkins/.jenkins/workspace/testY:/usr/src') {
-                        // Ensure you have a valid sonar-project.properties or pass SonarQube parameters via command
+                    docker.image("sonarsource/sonar-scanner-cli:latest").inside {
+                        // Verify the working directory
+                        sh 'ls -al /usr/src' // Adjust this path based on your setup
+                        // Run sonar-scanner
                         sh 'sonar-scanner'
                     }
                 }
