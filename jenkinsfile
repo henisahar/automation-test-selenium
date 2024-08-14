@@ -7,15 +7,7 @@ pipeline {
                 git 'https://github.com/henisahar/automation-test-selenium.git'
             }
         }
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    withEnv(["PATH+SONAR=${tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'}"]) {
-                        bat "sonar-scanner -Dsonar.projectKey=your_project_key -Dsonar.sources=./src -Dsonar.host.url=https://your-sonarqube-server.com -Dsonar.login=your_token"
-                    }
-                }
-            }
-        }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -23,6 +15,21 @@ pipeline {
                 }
             }
         }
+
+        stage('Run SonarQube Scanner') {
+            agent {
+                docker {
+                    image 'my-selenium-test'
+                    args '-v /root/.m2:/root/.m2' // Mount local Maven repository
+                }
+            }
+            steps {
+                withSonarQubeEnv('SonarQube_server') {
+                    bat 'mvn clean package sonar:sonar'
+                }
+            }
+        }
+
         stage('Push Docker Image') {
             steps {
                 script {
