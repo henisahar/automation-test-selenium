@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     withEnv(["PATH+SONAR=${tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'}"]) {
-                        sh "sonar-scanner -Dsonar.projectKey=your_project_key -Dsonar.sources=./src -Dsonar.host.url=https://your-sonarqube-server.com -Dsonar.login=your_token"
+                        bat "sonar-scanner -Dsonar.projectKey=your_project_key -Dsonar.sources=./src -Dsonar.host.url=https://your-sonarqube-server.com -Dsonar.login=your_token"
                     }
                 }
             }
