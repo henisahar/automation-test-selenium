@@ -4,16 +4,16 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/henisahar/automation-test-selenium.git' // Update with your repository URL
+                git 'https://github.com/henisahar/automation-test-selenium.git'
             }
         }
 
         stage('SonarQube Analysis') {
             environment {
-                scannerHome = tool 'SonarQube Scanner' // This should match the name of the SonarQube Scanner installation in Jenkins
+                scannerHome = tool 'SonarQube Scanner'  // This matches your configured scanner name
             }
             steps {
-                withSonarQubeEnv('SonarQube Scanner') { // This should match the name of your SonarQube server in Jenkins
+                withSonarQubeEnv('SonarQube') { // Ensure this matches the configured SonarQube server name
                     sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
