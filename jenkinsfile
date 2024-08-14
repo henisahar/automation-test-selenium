@@ -10,7 +10,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                   dockerImage = docker.build("saharheni/selenium-tests:${env.BUILD_ID}")
+                    dockerImage = docker.build("saharheni/selenium-tests:${env.BUILD_ID}")
                 }
             }
         }
@@ -24,6 +24,7 @@ pipeline {
                 }
             }
         }
+    }
 
     post {
         always {
