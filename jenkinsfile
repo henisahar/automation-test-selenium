@@ -24,19 +24,7 @@ pipeline {
                 }
             }
         }
-        stage('Update GitHub Status') {
-            steps {
-                script {
-                    def status = currentBuild.result == 'SUCCESS' ? 'success' : 'failure'
-                    step([
-                        $class: 'GitHubCommitStatusSetter',
-                        contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'ci/build'],
-                        statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[status: status, state: status]]]
-                    ])
-                }
-            }
-        }
-    }
+
     post {
         always {
             emailext(
