@@ -1,11 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            label 'windows'
-            image 'mcr.microsoft.com/powershell'
-        }
-    }
-
+    agent any
     stages {
         stage('Build Docker Image') {
             steps {
@@ -17,8 +11,8 @@ pipeline {
         stage('Run SonarQube Scanner') {
             steps {
                 script {
-                    docker.image('my-selenium-test').inside("-v C:/ProgramData/Jenkins/.jenkins/workspace/testY:/app")  {
-                        bat 'mvn sonar:sonar'
+                    docker.image('my-selenium-test').inside('-w /app -v /c/ProgramData/Jenkins/.jenkins/workspace/testY:/app') {
+                        sh 'mvn sonar:sonar'
                     }
                 }
             }
@@ -26,13 +20,11 @@ pipeline {
     }
     post {
         failure {
-            script {
-                emailext(
-                    subject: "Jenkins Build Failed: ${currentBuild.fullDisplayName}",
-                    body: "Build failed. Please check the Jenkins console output for more details.",
-                    to: "saharheni6@gmail.com, sahar.heni@ensi-uma.tn"
-                )
-            }
+            emailext(
+                subject: "Jenkins Build Failed: ${currentBuild.fullDisplayName}",
+                body: "Build failed. Please check the Jenkins console output for more details.",
+                to: "saharheni6@gmail.com, sahar.heni@ensi-uma.tn"
+            )
         }
     }
 }
