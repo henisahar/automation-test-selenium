@@ -36,7 +36,7 @@ public class ForgotPasswordPage {
         btn.click();
     }
 
-    public void visibility_empty_field_error() throws InterruptedException {
+    public void visibility_empty_field_error() {
 
         WebElement message = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(empty_fild_error)));
         String actualText = message.getText();
