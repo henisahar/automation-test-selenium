@@ -1,35 +1,12 @@
 pipeline {
     agent any
+
     stages {
-        stage('Start Pipeline') {
+        stage('Run SonarQube Scanner') {
             steps {
                 script {
-                    echo 'Starting Pipeline Execution...'
-                }
-            }
-        }
-        stage('Cloning Code') {
-            steps {
-                script {
-                    echo 'Cloning the Code from SCM...'
-                    checkout scm
-                }
-            }
-        }
-        stage('Build Project') {
-            steps {
-                script {
-                    echo 'Building the Project...'
-                    bat 'mvn clean package'
-                }
-            }
-        }
-        stage('Quality Analysis') {
-            steps {
-                script {
-                    echo 'Running Quality Analysis with SonarQube...'
                     withSonarQubeEnv('SonarQube_server') {
-                        bat 'mvn sonar:sonar'
+                        bat 'mvn clean package sonar:sonar'
                     }
                 }
             }
@@ -37,7 +14,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerImage = docker.build("saharheni/selenium-tests:${env.BUILD_ID}")
+                    dockerImage = docker.build("saharheni/selenium-tests:${env.BUILD_ID}")
                 }
             }
         }
@@ -51,24 +28,15 @@ pipeline {
                 }
             }
         }
-        stage('Send Email') {
-            steps {
-                script {
-                    echo 'Sending Results via Email...'
-                    emailext(
-                        to: 'saharheni6@gmail.com, sahar.heni@ensi-uma.tn',
-                        subject: "Build ${currentBuild.fullDisplayName}",
-                        body: "Build ${currentBuild.fullDisplayName} finished with status: ${currentBuild.result}\nCheck the SonarQube report for more details."
-                    )
-                }
-            }
-        }
-        stage('End Pipeline') {
-            steps {
-                script {
-                    echo 'Pipeline Execution Completed.'
-                }
-            }
+    }
+
+    post {
+        always {
+            emailext(
+                to: 'saharheni6@gmail.com, sahar.heni@ensi-uma.tn',
+                subject: "Build ${currentBuild.fullDisplayName}",
+                body: "Build ${currentBuild.fullDisplayName} finished with status: ${currentBuild.result}\nCheck the SonarQube report for more details."
+            )
         }
     }
 }
