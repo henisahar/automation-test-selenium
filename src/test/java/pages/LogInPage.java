@@ -1,19 +1,14 @@
 package pages;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
 import static org.junit.Assert.assertEquals;
-
 public class LogInPage {
     private static WebDriver driver;
     private static WebDriverWait wait;
-
-    // XPaths for various elements
     private static By logInXPath = By.xpath("//*[@id=\"__BVID__17__BV_toggle_\"]");
     private static By usernameTextXPath = By.id("email");
     private static By passwordTextXPath = By.id("password");
@@ -22,7 +17,6 @@ public class LogInPage {
     private static By loginErrorMessageXPath = By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[3]/div[1]/div/span");
     private static By loginWrongCredentialsXPath = By.xpath("//*[@id=\"ContentList\"]/div/div/ul/li/ul/li/span");
     private static By forgotPasswordXPath = By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[3]/div/div[2]/span");
-
 
     public LogInPage(WebDriver driver) {
         this.driver = driver;

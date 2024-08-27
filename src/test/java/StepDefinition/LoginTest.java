@@ -8,14 +8,8 @@ import pages.HomePage;
 import pages.LogInPage;
 import pages.LogUpPage;
 import utility.BrowserDriver;
-
-
-
-
 public class LoginTest {
     private WebDriver driver;
-
-
     @Given("Navigate the user to the login page")
     public void navigate_the_user_to_the_login_page() {
         System.out.println("BasePage constructor called");

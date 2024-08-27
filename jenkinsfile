@@ -2,41 +2,67 @@ pipeline {
     agent any
 
     stages {
-        stage('Run SonarQube Scanner') {
+        stage('Start Pipeline') {
             steps {
                 script {
-                    withSonarQubeEnv('SonarQube_server') {
-                        bat 'mvn clean package sonar:sonar'
-                    }
+                    echo 'Starting Pipeline Execution...'
                 }
             }
         }
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    dockerImage = docker.build("saharheni/selenium-tests:${env.BUILD_ID}")
-                }
-            }
-        }
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
-                        dockerImage.push("${env.BUILD_ID}")
-                        dockerImage.push("latest")
-                    }
-                }
-            }
-        }
-    }
 
-    post {
-        always {
-            emailext(
-                to: 'saharheni6@gmail.com, sahar.heni@ensi-uma.tn',
-                subject: "Build ${currentBuild.fullDisplayName}",
-                body: "Build ${currentBuild.fullDisplayName} finished with status: ${currentBuild.result}\nCheck the SonarQube report for more details."
-            )
+        stage('Cloning Code') {
+            steps {
+                script {
+                    echo 'Cloning the Code from SCM...'
+                    checkout scm
+                    // or specify additional checkout options if needed
+                }
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                script {
+                    echo 'Building the Project...'
+                    bat 'mvn clean package'
+                    // Use 'sh' instead of 'bat' if running on a Unix-based system
+                }
+            }
+        }
+
+        stage('Quality Analysis') {
+            steps {
+                script {
+                    echo 'Running Quality Analysis with SonarQube...'
+                    withSonarQubeEnv('SonarQube_server') {
+                        bat 'mvn sonar:sonar'
+                        // Adjust the Maven command if your setup is different
+                    }
+                }
+            }
+        }
+
+
+
+        stage('Send Email') {
+            steps {
+                script {
+                    echo 'Sending Results via Email...'
+                    emailext(
+                        to: 'saharheni6@gmail.com, sahar.heni@ensi-uma.tn',
+                        subject: "Build ${currentBuild.fullDisplayName}",
+                        body: "Build ${currentBuild.fullDisplayName} finished with status: ${currentBuild.result}\nCheck the SonarQube report for more details."
+                    )
+                }
+            }
+        }
+
+        stage('End Pipeline') {
+            steps {
+                script {
+                    echo 'Pipeline Execution Completed.'
+                }
+            }
         }
     }
 }
