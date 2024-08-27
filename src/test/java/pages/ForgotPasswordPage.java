@@ -37,7 +37,7 @@ public class ForgotPasswordPage {
     }
 
     public void visibility_empty_field_error() throws InterruptedException {
-        Thread.sleep(2000); // It’s better to use implicit wait rather than Thread.sleep()
+
         WebElement message = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(empty_fild_error)));
         String actualText = message.getText();
         assertEquals("Le nom d'utilisateur est obligatoire", actualText);
