@@ -1,49 +1,30 @@
 pipeline {
     agent any
-
     stages {
         stage('Start Pipeline') {
             steps {
                 script {
                     echo 'Starting Pipeline Execution...'
-                }
-            }
-        }
-
+               }}}
         stage('Cloning Code') {
             steps {
                 script {
                     echo 'Cloning the Code from SCM...'
                     checkout scm
-                    // or specify additional checkout options if needed
-                }
-            }
-        }
-
+                }}}
         stage('Build Project') {
             steps {
                 script {
                     echo 'Building the Project...'
                     bat 'mvn clean package'
-                    // Use 'sh' instead of 'bat' if running on a Unix-based system
-                }
-            }
-        }
-
+                }}}
         stage('Quality Analysis') {
             steps {
                 script {
                     echo 'Running Quality Analysis with SonarQube...'
                     withSonarQubeEnv('SonarQube_server') {
                         bat 'mvn sonar:sonar'
-                        // Adjust the Maven command if your setup is different
-                    }
-                }
-            }
-        }
-
-
-
+                   }}}}
         stage('Send Email') {
             steps {
                 script {
@@ -52,17 +33,9 @@ pipeline {
                         to: 'saharheni6@gmail.com, sahar.heni@ensi-uma.tn',
                         subject: "Build ${currentBuild.fullDisplayName}",
                         body: "Build ${currentBuild.fullDisplayName} finished with status: ${currentBuild.result}\nCheck the SonarQube report for more details."
-                    )
-                }
-            }
-        }
-
+                    )}}}
         stage('End Pipeline') {
             steps {
                 script {
                     echo 'Pipeline Execution Completed.'
-                }
-            }
-        }
-    }
-}
+                }}}}}
